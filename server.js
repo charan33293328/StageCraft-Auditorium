@@ -1,3 +1,4 @@
+
 const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
@@ -6,6 +7,13 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+
+// Initialize database
+require("./config/database");
+
+// Technician routes
+const technicianRoutes = require("./routes/technicianRoutes");
+app.use("/technicians", technicianRoutes);
 
 app.get("/", (req, res) => {
     res.status(200).json({
