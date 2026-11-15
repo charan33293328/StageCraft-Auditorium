@@ -19,6 +19,10 @@ app.use("/technicians", technicianRoutes);
 const speakerRoutes = require("./routes/speakerRoutes");
 app.use("/speakers", speakerRoutes);
 
+// Booking routes
+const bookingRoutes = require("./routes/bookingRoutes");
+app.use("/bookings", bookingRoutes);
+
 app.get("/", (req, res) => {
     res.status(200).json({
         message: "StageCraft Auditorium API is running"
