@@ -3,24 +3,27 @@ const sqlite3 = require("sqlite3").verbose();
 const path = require("path");
 const fs = require("fs");
 
-const databaseDirectory = path.join(__dirname, "../database");
+const defaultDatabaseDirectory = path.join(__dirname, "../database");
 
-fs.mkdirSync(databaseDirectory, { recursive: true });
+const dbPath =
+    process.env.DATABASE_PATH ||
+    path.join(defaultDatabaseDirectory, "stagecraft.db");
 
-const dbPath = path.join(databaseDirectory, "stagecraft.db");
+fs.mkdirSync(path.dirname(dbPath), { recursive: true });
 
 const db = new sqlite3.Database(dbPath, (err) => {
     if (err) {
         console.error("Database connection failed:", err.message);
     } else {
         console.log("Connected to StageCraft SQLite database");
-
-        // Enable foreign key constraints
-        db.run("PRAGMA foreign_keys = ON");
+        console.log("Database location:", dbPath);
     }
 });
 
 db.serialize(() => {
+    // Enable foreign key constraints
+    db.run("PRAGMA foreign_keys = ON");
+
     // Technicians table
     db.run(`
         CREATE TABLE IF NOT EXISTS technicians (
