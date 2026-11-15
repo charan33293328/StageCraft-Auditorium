@@ -201,10 +201,74 @@ const deleteBooking = (req, res) => {
     );
 };
 
+// UPDATE booking status with sequential validation
+const updateBookingStatus = (req, res) => {
+    const id = Number(req.params.id);
+    const { status } = req.body;
+
+    if (!Number.isInteger(id) || id <= 0) {
+        return res.status(400).json({
+            error: "Invalid booking ID"
+        });
+    }
+
+    if (!["approved", "done"].includes(status)) {
+        return res.status(400).json({
+            error: "Invalid status change"
+        });
+    }
+
+    db.get(
+        "SELECT status FROM bookings WHERE id = ?",
+        [id],
+        (err, booking) => {
+            if (err) {
+                return res.status(500).json({
+                    error: "Failed to retrieve booking"
+                });
+            }
+
+            if (!booking) {
+                return res.status(404).json({
+                    error: "Booking not found"
+                });
+            }
+
+            const validTransition =
+                (booking.status === "pending" && status === "approved") ||
+                (booking.status === "approved" && status === "done");
+
+            if (!validTransition) {
+                return res.status(400).json({
+                    error: "Invalid status change"
+                });
+            }
+
+            db.run(
+                "UPDATE bookings SET status = ? WHERE id = ?",
+                [status, id],
+                function (updateErr) {
+                    if (updateErr) {
+                        return res.status(500).json({
+                            error: "Failed to update booking status"
+                        });
+                    }
+
+                    res.status(200).json({
+                        message: "Booking status updated successfully",
+                        status
+                    });
+                }
+            );
+        }
+    );
+};
+
 module.exports = {
     createBooking,
     getAllBookings,
     getBookingById,
     updateBooking,
-    deleteBooking
+    deleteBooking,
+    updateBookingStatus
 };
