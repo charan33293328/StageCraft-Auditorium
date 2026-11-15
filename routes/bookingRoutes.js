@@ -1,4 +1,3 @@
-
 const express = require("express");
 const router = express.Router();
 
@@ -18,5 +17,8 @@ router.put("/:id", bookingController.updateBooking);
 
 // Delete booking
 router.delete("/:id", bookingController.deleteBooking);
+
+// Update booking status
+router.patch("/:id/status", bookingController.updateBookingStatus);
 
 module.exports = router;

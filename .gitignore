@@ -2,4 +2,8 @@ node_modules/
 .env
 database/*.db
 .postman/
-postman/
+
+# Ignore Postman workspace files except the exported collection
+postman/*
+!postman/
+!postman/StageCraft.postman_collection.json
