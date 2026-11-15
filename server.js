@@ -15,6 +15,10 @@ require("./config/database");
 const technicianRoutes = require("./routes/technicianRoutes");
 app.use("/technicians", technicianRoutes);
 
+// Speaker routes
+const speakerRoutes = require("./routes/speakerRoutes");
+app.use("/speakers", speakerRoutes);
+
 app.get("/", (req, res) => {
     res.status(200).json({
         message: "StageCraft Auditorium API is running"
