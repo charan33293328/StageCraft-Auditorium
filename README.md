@@ -380,6 +380,10 @@ GitHub Repository:
 
 https://github.com/charan33293328/StageCraft-Auditorium
 
+Deployed Link: 
+
+https://stagecraft-auditorium.onrender.com
+
 ---
 
 **StageCraft Auditorium – Sound Equipment Management System**
